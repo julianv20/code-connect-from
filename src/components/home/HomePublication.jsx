@@ -99,6 +99,7 @@ export const HomePublication = () => {
                 code,
                 comments,
                 group,
+                likesUsers,
               },
               index,
             ) => (
@@ -122,7 +123,7 @@ export const HomePublication = () => {
                           fontSize: '8px',
                           lineHeight: '1.4',
                         }}
-                        className="text-sm font-light rounded-lg max-h-96 overflow-y-hidden"
+                        classNzame="text-sm font-light rounded-lg max-h-96 overflow-y-hidden"
                       >
                         {code}
                       </SyntaxHighlighter>
@@ -142,7 +143,11 @@ export const HomePublication = () => {
                       />
                     )}
                   </div>
-                  <LikeAndCommentComponent idPublication={_id} group={group} />
+                  <LikeAndCommentComponent
+                    idPublication={_id}
+                    group={group}
+                    likes={likesUsers}
+                  />
                 </div>
                 <Comentarios
                   comments={comments}

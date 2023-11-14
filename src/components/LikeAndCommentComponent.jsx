@@ -3,12 +3,15 @@ import { AiFillHeart } from 'react-icons/ai';
 import { FaCommentDots } from 'react-icons/fa';
 import { useGroupsStore } from '../hooks/useGroupsStore';
 import { useDispatch, useSelector } from 'react-redux';
+import { createLikeStore } from '../store/groups/groupSlice';
 
-export const LikeAndCommentComponent = ({ idPublication, group }) => {
+export const LikeAndCommentComponent = ({ idPublication, group, likes }) => {
   const [showAreaComments, setShowAreaComments] = useState(false);
   const [commentValue, setCommentValue] = useState(''); // Agrega un estado para el valor del comentario
-  const { createComment } = useGroupsStore();
+  const { createComment, handleLike, handleDeleteLike } = useGroupsStore();
   const { socket } = useSelector((state) => state.socket);
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const handleComment = () => {
     const data = {
@@ -44,11 +47,57 @@ export const LikeAndCommentComponent = ({ idPublication, group }) => {
     };
   }, [socket]);
 
+  const handleCreateLike = async () => {
+    const res = await handleLike(idPublication);
+    const data = {
+      idPublication,
+      group,
+    };
+
+    if (res) {
+      socket.emit('like-publicacion', data);
+    }
+  };
+  const handleDeleteLikeFunction = async () => {
+    const res = await handleDeleteLike(idPublication);
+
+    const data = {
+      idPublication,
+      group,
+    };
+
+    if (res) {
+      socket.emit('like-publicacion', data);
+    }
+  };
+
+  useEffect(() => {
+    socket.on('nuevo-like-publicacion', (data) => {
+      console.log('Nuevo like:', data);
+      dispatch(createLikeStore(data));
+    });
+
+    return () => {
+      socket.off('nuevo-like-publicacion');
+    };
+  }, [socket]);
+
   return (
     <div>
       <div className="flex items-center justify-between space-x-2 mt-5">
         <div className="flex space-x-3">
-          <AiFillHeart className="w-6 h-6 cursor-pointer hover:text-purple-700 transition-colors" />
+          {likes.find((id) => id === user._id) ? (
+            <AiFillHeart
+              className="w-6 h-6 cursor-pointer text-purple-700"
+              onClick={() => handleDeleteLikeFunction()}
+            />
+          ) : (
+            <AiFillHeart
+              className="w-6 h-6 cursor-pointer hover:text-neutral-400 transition-colors"
+              onClick={() => handleCreateLike()}
+            />
+          )}
+          <span>{likes?.length}</span>
         </div>
         <div className="flex space-x-3 hover:text-purple-700 transition-colors">
           <button

@@ -245,6 +245,25 @@ export const groupSlice = createSlice({
         }
       }
     },
+    createLikeStore(state, { payload }) {
+      // console.log(payload.idPublication);
+
+      const publicationId = payload.idPublication;
+      const publicationIndex = state.publications.findIndex(
+        (publication) => publication._id === publicationId,
+      );
+
+      if (publicationIndex !== -1) {
+        // Clona la publicación y actualiza la propiedad 'comments'
+        const updatedPublication = {
+          ...state.publications[publicationIndex],
+          likesUsers: payload.likes,
+        };
+
+        // Reemplaza la publicación en el array con la versión actualizada
+        state.publications[publicationIndex] = updatedPublication;
+      }
+    },
   },
 });
 
@@ -267,4 +286,5 @@ export const {
   setPublicationsOfGroupPaginated,
   setPagesProfile,
   createCommentStore,
+  createLikeStore,
 } = groupSlice.actions;

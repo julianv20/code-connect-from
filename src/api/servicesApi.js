@@ -81,7 +81,7 @@ export default {
         headers: {
           token: token,
         },
-      }
+      },
     );
   },
 
@@ -108,7 +108,7 @@ export default {
         headers: {
           token: token,
         },
-      }
+      },
     );
   },
   updatePublication(idPublication, formData, token) {
@@ -131,5 +131,27 @@ export default {
         token: token,
       },
     });
+  },
+  createLike(idUser, idPublication, token) {
+    return api.put(
+      `like/add/${idUser}`,
+      { idPublication },
+      {
+        headers: {
+          token: token,
+        },
+      },
+    );
+  },
+  deleteLike(idUser, idPublication, token) {
+    return api.put(
+      `like/remove/${idUser}`,
+      { idPublication },
+      {
+        headers: {
+          token: token,
+        },
+      },
+    );
   },
 };

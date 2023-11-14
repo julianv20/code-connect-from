@@ -14,6 +14,7 @@ import {
   addOnePubliactionWithSocket,
   setPagesProfile,
   createCommentStore,
+  createLikeStore,
   // seAllPublicationsPaginated,
 } from '../store/groups/groupSlice';
 
@@ -70,7 +71,7 @@ export const useGroupsStore = () => {
       const { data } = await servicesApi.getAllPublications(
         token,
         idUser,
-        page
+        page,
       );
 
       console.log(data);
@@ -104,7 +105,7 @@ export const useGroupsStore = () => {
       const { data } = await servicesApi.createPublication(
         idUser,
         formData,
-        token
+        token,
       );
       console.log(data);
 
@@ -133,7 +134,7 @@ export const useGroupsStore = () => {
       const { data } = await servicesApi.updatePublication(
         idPublication,
         formData,
-        token
+        token,
       );
       dispatch(updatePublicationStore(data.publication));
       return true;
@@ -163,11 +164,45 @@ export const useGroupsStore = () => {
       const { data } = await servicesApi.createRespCommentFather(
         idUser,
         formData,
-        token
+        token,
       );
       console.log(data);
       dispatch(createCommentStore(data.comments));
 
+      return true;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleLike = async (idPublication) => {
+    const token = localStorage.getItem('token');
+    const idUser = localStorage.getItem('idUser');
+    try {
+      const { data } = await servicesApi.createLike(
+        idUser,
+        idPublication,
+        token,
+      );
+      console.log(data);
+      dispatch(createLikeStore(data));
+      return true;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDeleteLike = async (idPublication) => {
+    const token = localStorage.getItem('token');
+    const idUser = localStorage.getItem('idUser');
+    try {
+      const { data } = await servicesApi.deleteLike(
+        idUser,
+        idPublication,
+        token,
+      );
+      dispatch(createLikeStore(data));
+      console.log(data);
       return true;
     } catch (error) {
       console.log(error);
@@ -190,6 +225,8 @@ export const useGroupsStore = () => {
     updatePublication,
     createComment,
     createRespFather,
+    handleLike,
+    handleDeleteLike,
     // useSocket,
   };
 };
