@@ -61,20 +61,20 @@ export const AppRouter = () => {
     <Routes>
       {status === 'not-authenticated' ? (
         <>
-          <Route path='/auth/*' element={<Auth />} />
-          <Route path='/*' element={<Navigate to='/auth/login' />} />
+          <Route path="/auth/*" element={<Auth />} />
+          <Route path="/*" element={<Navigate to="/auth/login" />} />
         </>
       ) : (
         <>
-          <Route path='/*' element={<Navigate to='/home' />} />
+          <Route path="/*" element={<Navigate to="/home" />} />
 
-          <Route path='/' element={<LayoutHome />}>
-            <Route path='/home' element={<HomePage />} />
-            <Route path='/profile' element={<UserPage />} />
-            <Route path='/profile/:id' element={<UserPageVisit />} />
-            <Route path='/configuration' element={<ConfigurationProfile />} />
-            <Route path='/groups' element={<GroupPage />} />
-            <Route path='/group/:id' element={<GroupPageContent />} />
+          <Route element={<LayoutHome />}>
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/profile" element={<UserPage />} />
+            <Route path="/profile/:id" element={<UserPageVisit />} />
+            <Route path="/configuration" element={<ConfigurationProfile />} />
+            <Route path="/groups" element={<GroupPage />} />
+            <Route path="/group/:id" element={<GroupPageContent />} />
           </Route>
         </>
       )}
