@@ -13,6 +13,8 @@ export const groupSlice = createSlice({
     totalPagesOfGroup: 0,
     totalPagesProfile: 0,
     groupActive: null,
+    notifications: [],
+    newNotification: false,
   },
   reducers: {
     deleteState: (state, { payload }) => {
@@ -161,7 +163,7 @@ export const groupSlice = createSlice({
       const publicationExists = state.publicationsForGroup.publications.some(
         (pub) => pub._id === payload._id,
       );
-      console.log(publicationExists);
+      // console.log(publicationExists);
 
       if (!publicationExists) {
         // Si la publicación no existe, agrégala al estado
@@ -245,6 +247,10 @@ export const groupSlice = createSlice({
         }
       }
     },
+    setNotificationsStore(state, { payload }) {
+      state.notifications = payload;
+    },
+    setNewNotificationsStore(state, { payload }) {},
     createLikeStore(state, { payload }) {
       // console.log(payload.idPublication);
 
@@ -262,6 +268,62 @@ export const groupSlice = createSlice({
 
         // Reemplaza la publicación en el array con la versión actualizada
         state.publications[publicationIndex] = updatedPublication;
+      }
+      // profile
+
+      const publicationIndexProfile = state.myPublications.findIndex(
+        (publication) => publication._id === publicationId,
+      );
+
+      if (publicationIndexProfile !== -1) {
+        // Clona la publicación y actualiza la propiedad 'comments'
+        const updatedPublicationProfile = {
+          ...state.myPublications[publicationIndexProfile],
+          likesUsers: payload.likes,
+        };
+
+        // Reemplaza la publicación en el array con la versión actualizada
+        state.myPublications[publicationIndexProfile] =
+          updatedPublicationProfile;
+      }
+
+      // grupos
+
+      if (state.publicationsForGroup.publications) {
+        const publicationIndexGroup =
+          state.publicationsForGroup.publications.findIndex(
+            (publication) => publication._id === publicationId,
+          );
+
+        if (publicationIndexGroup !== -1) {
+          // Clona la publicación y actualiza la propiedad 'comments'
+          const updatedPublicationGroup = {
+            ...state.publicationsForGroup.publications[publicationIndexGroup],
+            likesUsers: payload.likes,
+          };
+
+          // Reemplaza la publicación en el array con la versión actualizada
+          state.publicationsForGroup.publications[publicationIndexGroup] =
+            updatedPublicationGroup;
+        }
+      }
+
+      if (state.publicationsUserVisit) {
+        const publicationIndexUserVisit = state.publicationsUserVisit.findIndex(
+          (publication) => publication._id === publicationId,
+        );
+
+        if (publicationIndexUserVisit !== -1) {
+          // Clona la publicación y actualiza la propiedad 'comments'
+          const updatedPublicationUserVisit = {
+            ...state.publicationsUserVisit[publicationIndexUserVisit],
+            likesUsers: payload.likes,
+          };
+
+          // Reemplaza la publicación en el array con la versión actualizada
+          state.publicationsUserVisit[publicationIndexUserVisit] =
+            updatedPublicationUserVisit;
+        }
       }
     },
   },
@@ -287,4 +349,5 @@ export const {
   setPagesProfile,
   createCommentStore,
   createLikeStore,
+  setNotificationsStore,
 } = groupSlice.actions;

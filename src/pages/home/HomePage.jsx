@@ -9,6 +9,7 @@ import axios from 'axios';
 
 export const HomePage = () => {
   const { socket } = useSelector((state) => state.socket);
+  const { newNotification } = useSelector((state) => state.group);
   const dispatch = useDispatch();
   useEffect(() => {
     // Escucha el evento 'nueva-publicacion' y muestra los datos en la consola
@@ -20,6 +21,16 @@ export const HomePage = () => {
     return () => {
       // Limpia la escucha del evento cuando el componente se desmonta
       socket.off('nueva-publicacion');
+    };
+  }, [socket]);
+  useEffect(() => {
+    socket.on('nueva-notificacion', (data) => {
+      console.log('Nueva notificacion recibida:', data);
+      // dispatch(addOnePubliactionWithSocket(data));
+    });
+
+    return () => {
+      socket.off('nueva-notificacion');
     };
   }, [socket]);
 

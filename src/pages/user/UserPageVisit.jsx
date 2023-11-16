@@ -118,6 +118,7 @@ export const UserPageVisit = () => {
               code,
               comments,
               group,
+              likesUsers,
             }) => (
               <div
                 className="flex flex-col mb-5 bg-neutral-800 hover:bg-neutral-700 transition-colors  rounded-lg   "
@@ -174,7 +175,11 @@ export const UserPageVisit = () => {
                       />
                     )}
                   </div>
-                  <LikeAndCommentComponent idPublication={_id} group={group} />
+                  <LikeAndCommentComponent
+                    idPublication={_id}
+                    group={group}
+                    likes={likesUsers}
+                  />
                 </div>
                 <Comentarios
                   comments={comments}

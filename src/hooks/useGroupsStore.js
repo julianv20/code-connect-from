@@ -15,6 +15,7 @@ import {
   setPagesProfile,
   createCommentStore,
   createLikeStore,
+  setNotificationsStore,
   // seAllPublicationsPaginated,
 } from '../store/groups/groupSlice';
 
@@ -209,6 +210,19 @@ export const useGroupsStore = () => {
     }
   };
 
+  const handleNotifications = async () => {
+    const token = localStorage.getItem('token');
+    const idUser = localStorage.getItem('idUser');
+    try {
+      const { data } = await servicesApi.notifications(idUser, token);
+      dispatch(setNotificationsStore(data.notifications));
+      console.log(data);
+      return true;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     //* Propiedades
     errorMessage,
@@ -227,6 +241,7 @@ export const useGroupsStore = () => {
     createRespFather,
     handleLike,
     handleDeleteLike,
+    handleNotifications,
     // useSocket,
   };
 };

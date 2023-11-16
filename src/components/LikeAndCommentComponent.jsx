@@ -86,7 +86,7 @@ export const LikeAndCommentComponent = ({ idPublication, group, likes }) => {
     <div>
       <div className="flex items-center justify-between space-x-2 mt-5">
         <div className="flex space-x-3">
-          {likes.find((id) => id === user._id) ? (
+          {likes?.find((id) => id === user._id) ? (
             <AiFillHeart
               className="w-6 h-6 cursor-pointer text-purple-700"
               onClick={() => handleDeleteLikeFunction()}

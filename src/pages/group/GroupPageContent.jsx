@@ -186,6 +186,7 @@ export const GroupPageContent = () => {
                     code,
                     comments,
                     group,
+                    likesUsers,
                   },
                   index,
                 ) => (
@@ -233,6 +234,7 @@ export const GroupPageContent = () => {
                           )}
                         </div>
                         <LikeAndCommentComponent
+                          likes={likesUsers}
                           idPublication={_id}
                           group={group}
                         />

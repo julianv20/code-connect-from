@@ -154,4 +154,11 @@ export default {
       },
     );
   },
+  notifications(idUser, token) {
+    return api.get(`notification/all/${idUser}`, {
+      headers: {
+        token: token,
+      },
+    });
+  },
 };
